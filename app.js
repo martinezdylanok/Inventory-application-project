@@ -1,6 +1,8 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import mongoose from "mongoose";
+import mongoDB from "./config/database.js";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import indexRouter from "./routes/index.js";
@@ -17,6 +19,13 @@ const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.set("layout", "layout");
+
+// mongoose connection to the mongoDB
+mongoose.set("strictQuery", false);
+main().catch((err) => console.log(err));
+async function main() {
+   await mongoose.connect(mongoDB);
+}
 
 app.use(logger("dev"));
 app.use(express.json());
